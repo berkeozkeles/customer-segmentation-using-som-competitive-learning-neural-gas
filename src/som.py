@@ -72,6 +72,7 @@ class SelfOrganizingMap:
 
 def load_and_preprocess_data():
     """Load and return the dataset without normalization"""
+
     df = pd.read_csv("../data/Mall_Customers.csv")
     X = df.iloc[:, 2:].values  # Select numerical features
     return X
