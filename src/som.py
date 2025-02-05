@@ -21,7 +21,7 @@ class SelfOrganizingMap:
 
     def fit(self, X):
         """Train the SOM and visualize learning at different epochs"""
-        fig, axes = plt.subplots(1, 6, figsize=(18, 5))
+        fig, axes = plt.subplots(1, 6, figsize=(20, 6))
         plot_epochs = [0, self.epochs // 5, 2 * self.epochs // 5, 3 * self.epochs // 5, 4 * self.epochs // 5,
                        self.epochs - 1]
 
@@ -50,24 +50,26 @@ class SelfOrganizingMap:
         return np.array([self.find_winner(x) for x in X])
 
     def plot_som_grid(self, ax, X, epoch):
-        """Plot SOM grid and mapped data points"""
+        """Plot SOM grid and mapped data points with improved clarity and colors"""
         y_pred = np.array([self.find_winner(x) for x in X])
-        colors = sns.color_palette("hsv", len(set([tuple(c) for c in y_pred])))
+        colors = sns.color_palette("tab10", len(set([tuple(c) for c in y_pred])))
 
         for idx, (x, y) in enumerate(y_pred):
-            ax.scatter(x + np.random.uniform(-0.2, 0.2),
-                       y + np.random.uniform(-0.2, 0.2),
+            ax.scatter(x + np.random.normal(0, 0.15),
+                       y + np.random.normal(0, 0.15),
                        color=colors[idx % len(colors)],
-                       marker="o", s=80, alpha=0.6)
+                       marker="o", s=100, edgecolors="black", linewidth=0.5, alpha=0.75)
 
         for i in range(self.grid_size):
             for j in range(self.grid_size):
-                ax.scatter(i, j, color="black", marker="s", s=150)
+                ax.scatter(i, j, color="white", edgecolors="black", marker="s", s=50, linewidth=1.5, alpha=0.9)
 
-        ax.set_title(f"Epoch {epoch}")
+        ax.set_title(f"SOM-Epoch {epoch}", fontsize=12, fontweight="bold")
+        ax.set_xlabel("SOM X", fontsize=10)
+        ax.set_ylabel("SOM Y", fontsize=10)
         ax.set_xticks(range(self.grid_size))
         ax.set_yticks(range(self.grid_size))
-        ax.grid(True)
+        ax.grid(color="gray", linestyle="dashed", linewidth=0.5, alpha=0.5)
 
 
 def load_and_preprocess_data():
